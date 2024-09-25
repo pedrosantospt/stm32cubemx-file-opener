@@ -3,6 +3,7 @@
   "displayName": "STM32CubeMX File Opener",
   "description": "VS Code extension to open .ioc files with STM32CubeMX",
   "version": "0.0.1",
+  "publisher": "PedroSantos",
   "engines": {
     "vscode": "^1.93.0"
   },
