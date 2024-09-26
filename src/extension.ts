@@ -7,8 +7,8 @@ import * as path from 'path';
 function getDefaultSTM32CubeMXPath(): string | null {
     const platformPaths = {
         win32: "C:\\Program Files\\STMicroelectronics\\STM32Cube\\STM32CubeMX\\STM32CubeMX.exe",
-        darwin: "/Applications/STM32CubeMX.app/Contents/MacOS/STM32CubeMX",
-        linux: path.join(process.env.HOME || '', 'STM32CubeMX', 'STM32CubeMX') // Dynamic Linux path based on the user's home directory
+        darwin: "/Applications/STMicroelectronics/STM32CubeMX.app/Contents/MacOS/STM32CubeMX",
+        linux: path.join(process.env.HOME || '', 'STM32CubeMX', 'STM32CubeMX')
     };
 
     const defaultPath = platformPaths[process.platform as keyof typeof platformPaths];
