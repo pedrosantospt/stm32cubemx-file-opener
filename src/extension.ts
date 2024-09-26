@@ -1,27 +1,17 @@
 import * as vscode from 'vscode';
 import { exec } from 'child_process';
 import * as fs from 'fs';
-import * as path from 'path';
-
-// Define the type for supported platforms
-type SupportedPlatforms = 'win32' | 'darwin' | 'linux';
 
 // Function to get the default STM32CubeMX path based on the operating system
 function getDefaultSTM32CubeMXPath(): string | null {
-    const platformPaths: Record<SupportedPlatforms, string> = {
+    const platformPaths = {
         win32: "C:\\Program Files\\STMicroelectronics\\STM32Cube\\STM32CubeMX\\STM32CubeMX.exe",
         darwin: "/Applications/STM32CubeMX.app/Contents/MacOS/STM32CubeMX",
         linux: "/usr/local/bin/STM32CubeMX"
     };
 
-    // Ensure process.platform is of a supported platform type
-    if (process.platform in platformPaths) {
-        const defaultPath = platformPaths[process.platform as SupportedPlatforms];
-        return defaultPath && fs.existsSync(defaultPath) ? defaultPath : null;
-    }
-
-    // Return null if the platform is not supported
-    return null;
+    const defaultPath = platformPaths[process.platform as keyof typeof platformPaths];
+    return defaultPath && fs.existsSync(defaultPath) ? defaultPath : null;
 }
 
 // Function to get the STM32CubeMX path from the configuration
@@ -52,7 +42,15 @@ export function activate(context: vscode.ExtensionContext) {
         const cubeMXPath = findSTM32CubeMXPath();
 
         if (!cubeMXPath) {
-            vscode.window.showErrorMessage('STM32CubeMX path not found. Please set the path in the extension settings.');
+            vscode.window.showErrorMessage(
+                'STM32CubeMX path not found. Please set the path in the extension settings.',
+                'Open Settings'
+            ).then(selection => {
+                if (selection === 'Open Settings') {
+                    // Open the settings for this extension directly
+                    vscode.commands.executeCommand('workbench.action.openSettings', '@ext:PedroSantos.stm32cubemx-file-opener');
+                }
+            });
             return;
         }
 
