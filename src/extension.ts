@@ -1,13 +1,14 @@
 import * as vscode from 'vscode';
 import { exec } from 'child_process';
 import * as fs from 'fs';
+import * as path from 'path';
 
 // Function to get the default STM32CubeMX path based on the operating system
 function getDefaultSTM32CubeMXPath(): string | null {
     const platformPaths = {
         win32: "C:\\Program Files\\STMicroelectronics\\STM32Cube\\STM32CubeMX\\STM32CubeMX.exe",
         darwin: "/Applications/STM32CubeMX.app/Contents/MacOS/STM32CubeMX",
-        linux: "/usr/local/bin/STM32CubeMX"
+        linux: path.join(process.env.HOME || '', 'STM32CubeMX', 'STM32CubeMX') // Dynamic Linux path based on the user's home directory
     };
 
     const defaultPath = platformPaths[process.platform as keyof typeof platformPaths];
