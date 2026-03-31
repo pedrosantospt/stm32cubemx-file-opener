@@ -16,3 +16,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixed automatic path detection for macOS and Linux.
 - Added a clickable error message to directly open extension settings when STM32CubeMX path is not found.
 - Added extension logo.
+
+### 0.2.0
+
+- STM32CubeMX is now launched as a detached process, so the "Opened in STM32CubeMX" notification appears immediately instead of waiting for CubeMX to close.

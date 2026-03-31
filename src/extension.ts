@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { exec } from 'child_process';
+import { spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -28,13 +28,17 @@ function findSTM32CubeMXPath(): string | null {
 
 // Function to open STM32CubeMX with the selected file
 function openSTM32CubeMX(filePath: string, cubeMXPath: string): void {
-    exec(`"${cubeMXPath}" "${filePath}"`, (err, stdout, stderr) => {
-        if (err) {
-            vscode.window.showErrorMessage(`Error opening STM32CubeMX: ${stderr}`);
-        } else {
-            vscode.window.showInformationMessage(`Opened ${filePath} in STM32CubeMX`);
-        }
+    const child = spawn(cubeMXPath, [filePath], {
+        detached: true,
+        stdio: 'ignore'
     });
+
+    child.on('error', (err) => {
+        vscode.window.showErrorMessage(`Error opening STM32CubeMX: ${err.message}`);
+    });
+
+    child.unref();
+    vscode.window.showInformationMessage(`Opened ${filePath} in STM32CubeMX`);
 }
 
 export function activate(context: vscode.ExtensionContext) {
