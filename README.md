@@ -9,8 +9,10 @@ The **STM32CubeMX File Opener** extension for Visual Studio Code lets you easily
 - **Quick Access**: Right-click on a `.ioc` file in the Explorer and select "Open in STM32CubeMX." It’s that easy.
 - **Automatic Detection**: The extension tries to detect the STM32CubeMX installation automatically:
   - On **Windows**: `C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeMX\STM32CubeMX.exe`
+  - On **Windows** (per-user install, CubeMX 6.10.0+): `%LOCALAPPDATA%\Programs\STM32CubeMX\STM32CubeMX.exe`
   - On **macOS**: `/Applications/STMicroelectronics/STM32CubeMX.app/Contents/MacOS/STM32CubeMX`
   - On **Linux**: `$HOME/STM32CubeMX/STM32CubeMX`
+  - Falls back to the `STM32CubeMX_PATH` environment variable if set by the installer.
 - **Custom Path Option**: If STM32CubeMX is installed elsewhere, or the automatic detection doesn’t work, you can easily set the path manually through the extension’s settings.
 - **Direct Access to Settings**: If the STM32CubeMX path is not found, the error message provides a clickable option to open the extension settings directly for easy configuration.
 
@@ -41,16 +43,25 @@ This extension contributes the following setting:
 
 ## Release Notes
 
-### 0.0.1
+### 0.3.0
 
-- Initial release of STM32CubeMX File Opener.
-- Added right-click context menu to open `.ioc` files with STM32CubeMX.
-- Automatic path detection for Windows, macOS, and Linux.
-- Option to manually configure the path to STM32CubeMX.
+- Added support for the new per-user installation path on Windows (`%LOCALAPPDATA%\Programs\STM32CubeMX`) introduced in CubeMX 6.10.0+.
+- Added fallback to the `STM32CubeMX_PATH` environment variable set by the installer.
+
+### 0.2.0
+
+- STM32CubeMX is now launched as a detached process, so the notification appears immediately.
 
 ### 0.1.0
 
 - Fixed automatic path detection for macOS and Linux.
 - Added a clickable error message to directly open extension settings when STM32CubeMX path is not found.
 - Added extension logo.
+
+### 0.0.1
+
+- Initial release of STM32CubeMX File Opener.
+- Added right-click context menu to open `.ioc` files with STM32CubeMX.
+- Automatic path detection for Windows, macOS, and Linux.
+- Option to manually configure the path to STM32CubeMX.
 

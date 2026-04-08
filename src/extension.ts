@@ -3,16 +3,28 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
+// Known default installation paths per platform, checked in order
+const defaultPaths: Record<string, string[]> = {
+    win32: [
+        "C:\\Program Files\\STMicroelectronics\\STM32Cube\\STM32CubeMX\\STM32CubeMX.exe",
+        path.join(process.env.LOCALAPPDATA || '', 'Programs', 'STM32CubeMX', 'STM32CubeMX.exe'),
+    ],
+    darwin: [
+        "/Applications/STMicroelectronics/STM32CubeMX.app/Contents/MacOS/STM32CubeMX",
+    ],
+    linux: [
+        path.join(process.env.HOME || '', 'STM32CubeMX', 'STM32CubeMX'),
+    ],
+};
+
 // Function to get the default STM32CubeMX path based on the operating system
 function getDefaultSTM32CubeMXPath(): string | null {
-    const platformPaths = {
-        win32: "C:\\Program Files\\STMicroelectronics\\STM32Cube\\STM32CubeMX\\STM32CubeMX.exe",
-        darwin: "/Applications/STMicroelectronics/STM32CubeMX.app/Contents/MacOS/STM32CubeMX",
-        linux: path.join(process.env.HOME || '', 'STM32CubeMX', 'STM32CubeMX')
-    };
+    const candidates = [
+        ...(defaultPaths[process.platform] || []),
+        process.env.STM32CubeMX_PATH || '',
+    ];
 
-    const defaultPath = platformPaths[process.platform as keyof typeof platformPaths];
-    return defaultPath && fs.existsSync(defaultPath) ? defaultPath : null;
+    return candidates.find(p => p && fs.existsSync(p)) || null;
 }
 
 // Function to get the STM32CubeMX path from the configuration
